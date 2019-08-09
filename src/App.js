@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './App.css';
 
 function App() {
 
@@ -35,21 +36,24 @@ function App() {
   });
 
   return (
-    <div>
-      <h2>Adu Ketik Cepat</h2>
-      <hr />
-      <h3>Snippet</h3>
+    <div className="container text-center">
+      <h2>Adu Ketik Cepat!</h2>
+      <hr /> <hr />
+      <h3>Pilih Kalimat (Snippet) yang ingin kamu ketik!</h3>
       {snippet}
       <h4>{gameState.victory ? `HOREE! kecepatan ketik anda: ${gameState.endTime} milidetik` : null}</h4>
-      <input value={userText} onChange={updateUserText} />
+      <input className="form-control" value={userText} onChange={updateUserText} />
       <hr />
+      <h3>Pilih Snippet</h3>
       {
         SNIPPETS.map((SNIPPET, index) => (
-          <button onClick={pilihSnippet(index)} key={index}>
+          <button className="btn btn-lg btn-primary" onClick={pilihSnippet(index)} key={index}>
             {SNIPPET.substring(0, 10)}...
           </button>
         ))
       }
+      <br />
+      <button>Mulai dari awal</button>
     </div>
   );
 }
