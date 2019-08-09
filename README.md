@@ -348,4 +348,4 @@ useEffect(() => {
 
 ```>``` Source code: https://github.com/vanbumi/adu-ketikcepat-app/tree/add_useEffect.
 
-```>``` Source code final: https://github.com/vanbumi/adu-ketikcepat-app/tree/finishing.
+```>``` Source code final app: https://github.com/vanbumi/adu-ketikcepat-app/tree/finishing.
