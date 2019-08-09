@@ -6,7 +6,7 @@ Demo nya bisa dilihat disini:
 
 Code nya bisa di dapat disini:
 
-### Setup project
+### 1. Setup project
 
 ```>``` Buatlah folder kerja anda.
 
@@ -52,7 +52,7 @@ import React, { useState } from 'react';
 ```>``` Aplikasikan useState didalam App function:
 
 ```react
-const [userText, setuUserText] = useState('');
+const [userText, setUserText] = useState('');
 ```
 
 kode lengkapnya sbb:
@@ -131,7 +131,11 @@ const App = () => {
 
 ```>``` Ketikkan sesuatu di field input dan lihat hasil nya di console, browser > klik kanan > inspect.
 
+```>``` Source code: https://github.com/vanbumi/adu-ketikcepat-app/tree/master.
 
+
+
+### 2. Menambahkan Snippet
 
 ```>``` Selanjutnya kita akan membuat pilihan kalimat kepada user. Untuk itu kita akan membuat array SNIPPETS dan tempatkan paling atas App function:
 
@@ -215,9 +219,13 @@ const pilihSnippet = snippetIndex => () => {
 
 ```o``` Memangkas kalimat dengan method ```substring``` 10 karakter pertama saja yang ditampilkan.
 
-```o``` onClick memanggil method "pilihSnippet" dan melewatkan index. Hasilnya pada callback function memanggil setSnippet dengan melewatkan index dan merubah snippet.      
+```o``` onClick memanggil method "pilihSnippet" dan melewatkan index. Hasilnya pada callback function memanggil setSnippet dengan melewatkan index dan merubah snippet. 
+
+```>``` Source code: https://github.com/vanbumi/adu-ketikcepat-app/blob/add_snippets/src/App.js.     
 
 
+
+### 3. Menambahkan gameState
 
 ```>``` Lanjut dengan menambahkan ```gameState```, yang akan melakukan track terhadap:
 
@@ -239,3 +247,104 @@ const [userText, setUserText] = useState('');
 const [snippet, setSnippet] = useState('');
 const [gameState, setGameState] = useState(INITIAL_GAME_STATE);
 ```
+
+```o``` Pada saat user memilih snippet akan ditambahkan juga ```startTime```nya.
+
+```o``` Kita gunakan ```setGameState``` untuk set value dari ```gameState.startGame```.
+
+```o``` Pada saat kita menggunakan setter method yang dikembalikan dari useState hook, akan menjadi object atau value yang baru (state awal), untuk itu kita menggunakan ***spread operator*** agar current data nya tetap eksis. Kemudian kita akan override startTime field to new Date().getTime().
+
+Kode nya seperti berikut:
+
+```react
+setGameState({ ...gameState, startTime: new Date().getTime() });
+```
+
+kode lengkapnya:
+
+```react
+const pilihSnippet = snippetIndex => () => {
+  setSnippet(SNIPPETS[snippetIndex]);
+  setGameState({ ...gameState, startTime: new Date().getTime() });
+};
+```
+
+```>``` Update helper updateUserText dengan menambahkan condition:
+
+```react
+const updateUserText = (event) => {
+  setUserText(event.target.value);
+  
+  if (event.target.value === snippet) {
+    setGameState({
+      ...gameState,
+      victory: true,
+      endTime: new Date().getTime() - gameState.startTime
+    });
+  }
+}
+```
+
+```>``` Update JSX:
+
+```react
+{snippet}
+<h4>{gameState.victory ? `HOREE! kecepatan ketik anda: ${gameState.endTime} milidetik` : null}</h4>
+<input value={userText} onChange={updateUserText} />
+```
+
+kode lengkapnya sbb:
+
+```react
+return (
+  <div>
+    <h2>Adu Ketik Cepat</h2>
+    <hr />
+    <h3>Snippet</h3>
+    {snippet}
+    <h4>{gameState.victory ? `HOREE! kecepatan ketik anda: ${gameState.endTime} milidetik` : null}</h4>
+    <input value={userText} onChange={updateUserText} />
+    <hr />
+    {
+      SNIPPETS.map((SNIPPET, index) => (
+        <button onClick={pilihSnippet(index)} key={index}>
+          {SNIPPET.substring(0, 10)}...
+        </button>
+      ))
+    }
+  </div>
+);
+```
+
+```>``` Coba hasil nya pada browser.
+
+```>``` Source code: https://github.com/vanbumi/adu-ketikcepat-app/blob/add_gamestate/src/App.js.
+
+
+
+### Menambahkan useEffect
+
+```>``` ***useEffect hook*** digunakan agar React component dapat men-triger sebuah effect terhadap DOM pada saat setelah ***render***.
+
+```>``` useEffect adalah callback function yang akan memberikan efek atau update terhadap DOM setelah di render.
+
+```>``` Component akan sering mendapat side efek pada saat:
+
+​	```>>``` Fetching data.
+
+​	```>>``` Setup subscription.
+
+​	```>>``` Secara manual merubah/update DOM.
+
+```>``` Letakkan useEffect diatas return:
+
+```react
+useEffect(() => {
+  if (gameState.victory) document.title = "Menang!";
+});
+```
+
+```>``` Sekarang setelah anda selesai adu cepat ketik pada browser title akan muncul kata "Menang!".
+
+```>``` Source code: https://github.com/vanbumi/adu-ketikcepat-app/tree/add_useEffect.
+
