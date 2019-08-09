@@ -1,68 +1,241 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# React Hooks Tutorial
 
-## Available Scripts
+Pada tutorial ini, kita akan belajar React Hooks sekaligus membuat aplikasi permainan sederhana yang kita sebut "KetikCepat", sebagai developer web anda bisa menguji kecepatan mengetik anda dengan mengetikkan kalimat yang sudah dibuat sebelumnya.
 
-In the project directory, you can run:
+Demo nya bisa dilihat disini: 
 
-### `npm start`
+Code nya bisa di dapat disini:
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Setup project
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+```>``` Buatlah folder kerja anda.
 
-### `npm test`
+```>``` React create app:
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+npx create-react-app ketikcepat-hooks-app
+```
 
-### `npm run build`
+```>``` CD ke ketikcepat-hooks-app
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```>``` Tambahkan React dan React DOM:
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+``` 
+npm install react react-dom
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Pastikan react yang terinstal versi 16.8.0 ke atas. Cek pada file package.json anda.
 
-### `npm run eject`
+```>``` Buka file App.js dan update dan sederhanakan seperti dibawah:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```react
+import React from 'react';
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+const App = () => {
+  return (
+    <div>
+      <h2>Adu Ketik Cepat</h2>
+      <input />
+    </div>
+  )
+}
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+export default App;
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```>``` Tambahkan (require) useState Hook:
 
-## Learn More
+```react
+import React, { useState } from 'react';
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```>``` Aplikasikan useState didalam App function:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```react
+const [userText, setuUserText] = useState('');
+```
 
-### Code Splitting
+kode lengkapnya sbb:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+```react
+const App = () => {
+  const [userText, setUserText] = useState('');
+  
+  return (
+    <div>
+      <h2>Adu Ketik Cepat</h2>
+      <input />
+    </div>
+  )
+}
+```
 
-### Analyzing the Bundle Size
+```>``` Membuat helper method di dalam function diatas:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+```react
+const updateUserText = (event) => {
+  setUserText(event.target.value);
+  console.log('current userText is:' userText);
+}
+```
 
-### Making a Progressive Web App
+kode lengkapnya sbb:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+```react
+const App = () => {
+  const [userText, setUserText] = useState('');
+  
+  const updateUserText = (event) => {
+  	setUserText(event.target.value);
+  	console.log('current userText is:' userText);
+	}
+  
+  return (
+    <div>
+      <h2>Adu Ketik Cepat</h2>
+      <input />
+    </div>
+  )
+}
+```
 
-### Advanced Configuration
+```>``` Update input field sbb;
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+```react
+<input value={userText} onChange={updateUserText} />
+```
 
-### Deployment
+kode lengkapnya sbb:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+```react
+const App = () => {
+  const [userText, setUserText] = useState('');
+  
+  const updateUserText = (event) => {
+  	setUserText(event.target.value);
+  	console.log('current userText is:' userText);
+	}
+  
+  return (
+    <div>
+      <h2>Adu Ketik Cepat</h2>
+      <input value={userText} onChange={updateUserText} />
+    </div>
+  )
+}
+```
 
-### `npm run build` fails to minify
+```>``` Jalankan ```npm run start```.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+```>``` Lihat hasilnya di localhost:3000.
+
+```>``` Ketikkan sesuatu di field input dan lihat hasil nya di console, browser > klik kanan > inspect.
+
+
+
+```>``` Selanjutnya kita akan membuat pilihan kalimat kepada user. Untuk itu kita akan membuat array SNIPPETS dan tempatkan paling atas App function:
+
+```react
+const SNIPPETS = [
+  'Beruang, berjuang, bersama menuju kemenangan bangsa.',
+  "Apa yang menyebabkan sebab musabab dari beberapa abab abab.",
+  'Kenapa programmer harus belajar menulis cepat.'
+];
+```
+
+```>``` Tambahkan useState untuk snippet ini:
+
+```react
+const [snippet, setSnippet] = useState('');
+```
+
+kode lengkap sbb:
+
+```react
+const App = () => {
+  const SNIPPETS = [
+    'Beruang, berjuang, bersama menuju kemenangan bangsa.',
+    "Apa yang menyebabkan sebab musabab dari beberapa abab abab.",
+    'Kenapa programmer harus belajar menulis cepat.'
+  ];
+  
+  const [snippet, setSnippet] = useState('');
+  const [userText, setUserText] = useState('');
+  
+  const updateUserText = (event) => {
+  	setUserText(event.target.value);
+  	console.log('current userText is:' userText);
+	}
+  
+  return (
+    <div>
+      <h2>Adu Ketik Cepat</h2>
+      <input value={userText} onChange={updateUserText} />
+    </div>
+  )
+}
+```
+
+```>``` Buat helper method agar user dapat memilih snippet tsb diatas, cara kerjanya helper method ini akan memanggil (return) **setState function** dari useState hook. 
+
+```react
+const pilihSnippet = snippetIndex => () => {
+  console.log('setSnippet', snippetIndex);
+  setSnippet(SNIPPETS[snippetIndex]);
+};
+```
+
+```*```catatan ***double arrow syntax*** setup ini akan membuat variable "pilihSnippet" untuk me-return callback function itu sendiri. Contoh: ```pilihSnippet(0)``` akan mengembalikan function itu sendiri, di akhiri dengan memanggil ```setSnippet(SNIPPETS[0]);```.
+
+
+
+```>``` Update Kode JSX, sbb:
+
+```   react
+<div>
+  <h2>Adu Ketik Cepat</h2>
+  <hr />
+  <h3>Snippet</h3>
+  {snippet}
+  <input value={userText} onChange={updateUserText} />
+  <hr />
+  {
+    SNIPPETS.map((SNIPPET, index) => (
+      <button onClick={pilihSnippet(index)} key={index}>
+        {SNIPPET.substring(0, 10)}...
+      </button>
+    ))
+  }
+</div>
+```
+
+```*```Catatan:
+
+```o``` Me-loop button SNIPPETS dengan map.
+
+```o``` Memangkas kalimat dengan method ```substring``` 10 karakter pertama saja yang ditampilkan.
+
+```o``` onClick memanggil method "pilihSnippet" dan melewatkan index. Hasilnya pada callback function memanggil setSnippet dengan melewatkan index dan merubah snippet.      
+
+
+
+```>``` Lanjut dengan menambahkan ```gameState```, yang akan melakukan track terhadap:
+
+```o``` **victory**: saat user sudah selesai mengetik snippet.
+
+```o``` **startTime**: saat user start game ini, dengan memilih salah satu snippet.
+
+```o``` **endTime**: dihitung dari start game dan finish ketik snippet.
+
+``` react
+const [gameState, setGameState] = useState(INITIAL_GAME_STATE);
+```
+
+kode lengkapnya:
+
+```react
+const INITIAL_GAME_STATE = { victory: false, startTime: null, endTime: null };
+const [userText, setUserText] = useState('');
+const [snippet, setSnippet] = useState('');
+const [gameState, setGameState] = useState(INITIAL_GAME_STATE);
+```
