@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function App() {
   // 4. create initial game state
@@ -36,6 +36,10 @@ function App() {
     setSnippet(SNIPPETS[snippetIndex]);
     setGameState({ ...gameState, startTime: new Date().getTime() });
   };
+
+  useEffect(() => {
+    if (gameState.victory) document.title = "Siapa Menang!";
+  });
 
   return (
     <div>
